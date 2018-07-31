@@ -12,6 +12,7 @@ final class Movie {
         
     var id: Int
     var title: String
+    var overview: String?
     var posterPath: String?
     var backdropPath: String?
     var voteAverage: Double?
@@ -28,6 +29,7 @@ final class Movie {
         
         id = dict["id"] as! Int
         title = dict["title"] as! String
+        overview = dict["overview"] as? String
         posterPath = dict["poster_path"] as? String
         backdropPath = dict["backdrop_path"] as? String
         voteAverage = dict["vote_average"] as? Double

@@ -25,6 +25,8 @@
 		84910172210FA0BC006B54C8 /* genre.json in Resources */ = {isa = PBXBuildFile; fileRef = 8491016D210FA0BC006B54C8 /* genre.json */; };
 		84910173210FA0BC006B54C8 /* now_playing.json in Resources */ = {isa = PBXBuildFile; fileRef = 8491016E210FA0BC006B54C8 /* now_playing.json */; };
 		84910174210FA0BC006B54C8 /* collection.json in Resources */ = {isa = PBXBuildFile; fileRef = 8491016F210FA0BC006B54C8 /* collection.json */; };
+		8491017A210FD73C006B54C8 /* CollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84910179210FD73C006B54C8 /* CollectionCell.swift */; };
+		8491017E21100E27006B54C8 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491017D21100E27006B54C8 /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +72,8 @@
 		8491016D210FA0BC006B54C8 /* genre.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = genre.json; sourceTree = "<group>"; };
 		8491016E210FA0BC006B54C8 /* now_playing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = now_playing.json; sourceTree = "<group>"; };
 		8491016F210FA0BC006B54C8 /* collection.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = collection.json; sourceTree = "<group>"; };
+		84910179210FD73C006B54C8 /* CollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionCell.swift; sourceTree = "<group>"; };
+		8491017D21100E27006B54C8 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +192,7 @@
 			children = (
 				84253CD0210F7DDD0083BBC6 /* LaunchScreen.storyboard */,
 				84253CCB210F7DDC0083BBC6 /* Main.storyboard */,
+				84910179210FD73C006B54C8 /* CollectionCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -196,6 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				84253CC9210F7DDC0083BBC6 /* ViewController.swift */,
+				8491017D21100E27006B54C8 /* DetailViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -338,10 +344,12 @@
 			files = (
 				84910163210F7F57006B54C8 /* Movie.swift in Sources */,
 				84253CCA210F7DDC0083BBC6 /* ViewController.swift in Sources */,
+				8491017A210FD73C006B54C8 /* CollectionCell.swift in Sources */,
 				84910167210F8302006B54C8 /* NowPlaying.swift in Sources */,
 				84253CF7210F7E560083BBC6 /* Secret.swift in Sources */,
 				84910165210F8213006B54C8 /* Genre.swift in Sources */,
 				84253CC8210F7DDC0083BBC6 /* AppDelegate.swift in Sources */,
+				8491017E21100E27006B54C8 /* DetailViewController.swift in Sources */,
 				84910161210F7F4C006B54C8 /* APIClient.swift in Sources */,
 				84910169210F863C006B54C8 /* MovieCollection.swift in Sources */,
 			);

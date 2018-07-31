@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit.UIImage
 
 // MARK: - APIAccessible
 
@@ -57,6 +58,13 @@ protocol APIClient {
      - parameter completion: Completion block with success status, array of APIAccessibles, or APIError
      */
     func get<T:APIAccessible>(urlString: String, completion: @escaping (T?, APIError?) -> Void)
+    
+    /**
+     GET Request for images using URLSession download task
+     - parameter for: Specific url for resource.
+     - parameter completion: Completion block with original url string, UIImage, or APIError
+     */
+    func image(for url: String, completion: @escaping (String, UIImage?, APIError?) -> Void)
 }
 
 struct APIError: Error {
@@ -67,7 +75,6 @@ struct APIError: Error {
 }
 
 // MARK: - Live API
-
 final class APIClientLive: APIClient {
 
     func get<T:APIAccessible>(urlString: String, completion: @escaping (T?, APIError?) -> Void) {
@@ -120,10 +127,48 @@ final class APIClientLive: APIClient {
         task.resume()
     }
     
+    
+
+    func image(for url: String, completion: @escaping (String, UIImage?, APIError?) -> Void) {
+    
+        let query = URLComponents(string: "https://image.tmdb.org/t/p/w500\(url)")
+  
+        guard let requestUrl = query?.url else {
+            assertionFailure("Invalid URL")
+            return
+        }
+        
+        let task = URLSession.shared.downloadTask(with: URLRequest(url: requestUrl)) { (fileUrl, response, error) in
+    
+            guard error == nil else {
+                completion(url, nil, APIError(statusCode: nil, statusMessage: error!.localizedDescription))
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else {
+                completion(url, nil, APIError(statusCode: nil, statusMessage: "No valid response"))
+                return
+            }
+            
+            guard response.statusCode == 200  else {
+                completion(url, nil, APIError(statusCode: response.statusCode, statusMessage: "No valid response"))
+                return
+            }
+            
+            if let download = fileUrl {
+                if let data = try? Data(contentsOf: download) {
+                    // try? Assets.save(data: data, url: self.localUrl!)
+                    completion(url, UIImage(data: data), nil)
+                    return
+                }
+            }
+        }
+        task.resume()
+    }
+
 }
 
 // MARK: - Mock API, for use in tests
-
 final class APIClientMock: APIClient {
     
     func get<T>(urlString: String, completion: @escaping (T?, APIError?) -> Void) where T : APIAccessible {
@@ -146,6 +191,10 @@ final class APIClientMock: APIClient {
         let json = try! JSONSerialization.jsonObject(with: data, options: .allowFragments)
         let rawSuccessData = json as! [String: Any]
         completion(T(dict: rawSuccessData), nil)
+    }
+    
+    func image(for url: String, completion: @escaping (String, UIImage?, APIError?) -> Void) {
+        // TODO: Add an image for testing
     }
     
 }
