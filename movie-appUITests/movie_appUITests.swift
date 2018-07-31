@@ -8,29 +8,49 @@
 
 import XCTest
 
-class movie_appUITests: XCTestCase {
         
-    override func setUp() {
-        super.setUp()
-        
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-        
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
-        // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
-        XCUIApplication().launch()
+class UITests: XCTestCase {
+    
+    func testUserFlow() {
+        givenAppOpens()
+        shouldDisplay(value: "Mission: Impossible - Fallout")
+        shouldDisplay(value: "Jurassic World: Fallen Kingdom")
+        select("Mission: Impossible - Fallout")
+        shouldDisplay(value: "Mission: Impossible - Fallout")
+        shouldDisplay(value: "Mission: Impossible Collection")
+        go("Back")
+        shouldDisplay(value: "Jurassic World: Fallen Kingdom")
+        select("Jurassic World: Fallen Kingdom")
+        shouldDisplay(value: "Jurassic Park Collection")
+        go("Back")
+    }
+    
+}
 
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+extension UITests {
+    
+    func givenAppOpens() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        // Uncomment this to test the mock API
+        // app.launchArguments.append("APIClientMock")
+        app.launch()
+        XCUIDevice.shared.orientation = .portrait
     }
     
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
+    func select(_ input: String) {
+        let app = XCUIApplication()
+        app.staticTexts[input].tap()
     }
     
-    func testExample() {
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func go(_ input: String) {
+        let app = XCUIApplication()
+        app.navigationBars["Movie"].buttons[input].tap()
+    }
+    
+    func shouldDisplay(value: String) {
+        let app = XCUIApplication()
+        XCTAssertTrue(app.staticTexts[value].isHittable)
     }
     
 }

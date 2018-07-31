@@ -20,7 +20,7 @@ Due to time constraints there are some issues, for example:
 
 * The only caching on the poster images (which have not been optimised for size) is handled but the URLSession download task. 
 
-* I have implented unit tests, but not UI tests.
+* I have implented unit tests, but only a very basic UI test, which currently tests against live data.
 
 ##  Configuration & build ##
 
@@ -51,3 +51,5 @@ enum APICredentials {
 Tests can be run through the standard test menu functions in Xcode.
 
 1. *movie-appTests/* - Unit tests for the model and the API, uses a mock API that can simply be switched to test the live API.
+
+1. *movie-appUITests/* - UI Test(s). Currently set to test the live API but the mock API can be tested using launch arguments.
