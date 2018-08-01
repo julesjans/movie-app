@@ -14,13 +14,11 @@ Due to time constraints there are some issues, for example:
 
 * There are very few data fields presented, only title, description, poster image and collections.
 
-* The APIClient needs refactoring, it is not the optimal design for this API.
+* The only caching on the poster images (which have also not been optimised for size) is handled by the URLSession download task. 
 
-* When selecting a movie from within a collection this pushes a new movie to the navigation stack, without releasing the stack/memory from below. Continuous selection will crash the app.
+* Tests are limited, but demonstate dependency injection with the API client. 
 
-* The only caching on the poster images (which have not been optimised for size) is handled but the URLSession download task. 
 
-* I have implented unit tests, but only a very basic UI test, which currently tests against live data.
 
 ##  Configuration & build ##
 
@@ -50,6 +48,6 @@ enum APICredentials {
 
 Tests can be run through the standard test menu functions in Xcode.
 
-1. *movie-appTests/* - Unit tests for the model and the API, uses a mock API that can simply be switched to test the live API.
+1. *movie-appTests/* - Unit tests for the model and the API, uses a mock API that can be switched to test the live API.
 
-1. *movie-appUITests/* - UI Test(s). Currently set to test the live API but the mock API can be tested using launch arguments.
+2. *movie-appUITests/* - UI tests for the view, uses a mock API (injected using XCUIApplication launch arguments), can be switched to test the live API. 

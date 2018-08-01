@@ -23,22 +23,16 @@ protocol APIAccessible {
      - parameter api: The APIClient to use.
      - parameter completion: Completion block with success status, item of APIAccessible, or APIError.
      */
-    static func get(id: Int?, api: APIClient, completion: @escaping (Self?, APIError?) -> Void)
+    static func get(id: Int, api: APIClient, completion: @escaping (Self?, APIError?) -> Void)
 }
 
 extension APIAccessible {
     
-    // TODO: Usually the method to use the API should be an extension method here,
-    // but due the naming conventions of the API in this case I have extracted this into the model extensions.
+    static func get(id: Int, api: APIClient, completion: @escaping (Self?, APIError?) -> Void) {
+        api.get(urlString: "\(String(describing: Self.self).lowercased())/\(id)", completion: completion)
+    }
     
-    //    static func get(id: Int?, api: APIClient, completion: @escaping (Self?, APIError?) -> Void) {
-    //        guard let id = id else {
-    //            assertionFailure()
-    //            return
-    //        }
-    //        api.get(urlString: "\(String(describing: Self.self).lowercased())/\(id)", completion: completion)
-    //    }
-    
+    /// Creates an array of APIAcessible from an array of dictionaries
     static func from(array: Array<[String: Any]>) -> [Self] {
         return array.compactMap { Self(dict: $0) }
     }
@@ -68,10 +62,8 @@ protocol APIClient {
 }
 
 struct APIError: Error {
-    
     let statusCode: Int?
     let statusMessage: String?
-    
 }
 
 // MARK: - Live API
@@ -127,37 +119,21 @@ final class APIClientLive: APIClient {
         task.resume()
     }
     
-    
-
+    // TODO: Add a better caching mechanism for the image
     func image(for url: String, completion: @escaping (String, UIImage?, APIError?) -> Void) {
-    
         let query = URLComponents(string: "https://image.tmdb.org/t/p/w500\(url)")
-  
         guard let requestUrl = query?.url else {
             assertionFailure("Invalid URL")
             return
         }
-        
         let task = URLSession.shared.downloadTask(with: URLRequest(url: requestUrl)) { (fileUrl, response, error) in
-    
-            guard error == nil else {
-                completion(url, nil, APIError(statusCode: nil, statusMessage: error!.localizedDescription))
+            guard error == nil, let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                let statusCode = (response as? HTTPURLResponse)?.statusCode
+                completion(url, nil, APIError(statusCode: statusCode, statusMessage: error?.localizedDescription ?? "Response error"))
                 return
             }
-            
-            guard let response = response as? HTTPURLResponse else {
-                completion(url, nil, APIError(statusCode: nil, statusMessage: "No valid response"))
-                return
-            }
-            
-            guard response.statusCode == 200  else {
-                completion(url, nil, APIError(statusCode: response.statusCode, statusMessage: "No valid response"))
-                return
-            }
-            
             if let download = fileUrl {
                 if let data = try? Data(contentsOf: download) {
-                    // try? Assets.save(data: data, url: self.localUrl!)
                     completion(url, UIImage(data: data), nil)
                     return
                 }
@@ -177,8 +153,10 @@ final class APIClientMock: APIClient {
         let fileName: String!
       
         switch T.self {
+        case is Movie.Type where ["movie/954", "movie/353081", "movie/351286"].contains(urlString):
+            fileName = urlString.replacingOccurrences(of: "/", with: "")
         case is Movie.Type:
-            fileName = "movie"
+            fileName = "movie353081"
         case is Genre.Type:
             fileName = "genre"
         case is MovieCollection.Type:
@@ -194,7 +172,7 @@ final class APIClientMock: APIClient {
     }
     
     func image(for url: String, completion: @escaping (String, UIImage?, APIError?) -> Void) {
-        // TODO: Add an image for testing
+        completion(url, UIImage(named: "image.jpg"), nil)
     }
     
 }

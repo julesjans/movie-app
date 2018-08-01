@@ -100,12 +100,12 @@
         <!--Movie-->
         <scene sceneID="fIK-KI-tcg">
             <objects>
-                <viewController title="Movie" id="RPQ-6m-pjk" customClass="DetailViewController" customModule="movie_app" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DetailViewController" title="Movie" id="RPQ-6m-pjk" customClass="DetailViewController" customModule="movie_app" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hrT-0T-XQz">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zXP-lT-LcR">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceVertical="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zXP-lT-LcR">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="yPZ-92-UxK">
@@ -207,7 +207,6 @@
                                                         <connections>
                                                             <outlet property="imageView" destination="mYY-0E-xiw" id="ke8-FV-WEu"/>
                                                             <outlet property="title" destination="UJM-z9-pNz" id="Jy7-mw-sou"/>
-                                                            <segue destination="RPQ-6m-pjk" kind="show" identifier="showDetail" id="iiZ-Qh-BUp"/>
                                                         </connections>
                                                     </collectionViewCell>
                                                 </cells>
@@ -242,6 +241,9 @@
                                     <constraint firstAttribute="bottom" secondItem="yPZ-92-UxK" secondAttribute="bottom" constant="12" id="dkc-oz-j3i"/>
                                     <constraint firstItem="yPZ-92-UxK" firstAttribute="top" secondItem="zXP-lT-LcR" secondAttribute="top" constant="12" id="rCK-JV-RWP"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="RPQ-6m-pjk" id="UXt-dr-ICC"/>
+                                </connections>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

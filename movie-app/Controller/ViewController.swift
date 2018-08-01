@@ -34,7 +34,6 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getData()
-
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -95,8 +94,8 @@ extension ViewController: UIScrollViewDelegate {
     
 }
 
-// MARK: UICollectionViewDelegates
-extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+// MARK: UICollectionView
+extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
@@ -105,12 +104,11 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! CollectionCell
         let item = items[indexPath.row]
-        
         cell.title.text = item.title
         if let posterPath = item.posterPath {
             apiClient.image(for: posterPath) { (url, image, error) in
-                if posterPath == url {
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    if posterPath == url {
                         cell.imageView?.image = image
                     }
                 }

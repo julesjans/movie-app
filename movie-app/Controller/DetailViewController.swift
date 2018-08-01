@@ -21,17 +21,35 @@ class DetailViewController: UIViewController {
     @IBOutlet var collectionLabel: UILabel!
     @IBOutlet var collectionViewContraints: [NSLayoutConstraint]!
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let button = UIBarButtonItem()
+        button.title = "Back"
+        navigationItem.backBarButtonItem = button
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        assert(apiClient != nil)
-        assert(selectedItem != nil)
-        Movie.get(id: selectedItem?.id, api: apiClient!) { (movie, error) in
+        getData()
+    }
+    
+}
+
+// MARK: Fetching data and configuring the view
+extension DetailViewController {
+    
+    func getData() {
+        guard let apiClient = apiClient, let id = selectedItem?.id else {
+            assertionFailure()
+            return
+        }
+        Movie.get(id: id, api: apiClient) { (movie, error) in
             assert(movie != nil)
             DispatchQueue.main.async {
                 self.selectedItem = movie
                 self.configureView()
                 if let collection = self.selectedItem?.collection {
-                    MovieCollection.get(id: collection.id, api: self.apiClient!, completion: { (collection, error) in
+                    MovieCollection.get(id: collection.id, api: apiClient, completion: { (collection, error) in
                         assert(collection != nil)
                         DispatchQueue.main.async {
                             self.selectedCollection = collection
@@ -42,23 +60,6 @@ class DetailViewController: UIViewController {
             }
         }
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showDetail" {
-            if let indexPath = self.collectionView.indexPathsForSelectedItems?.first {
-                let item = selectedCollection?.movies?[indexPath.row]
-                if let detail = segue.destination as? DetailViewController {
-                    detail.apiClient = apiClient
-                    detail.selectedItem = item
-                }
-            }
-        }
-    }
-    
-}
-
-// MARK: Configuring the view
-extension DetailViewController {
     
     func configureView() {
         titleLabel.text = selectedItem?.title
@@ -83,11 +84,27 @@ extension DetailViewController {
     
 }
 
-// MARK: UICollectionViewDelegates
+// MARK: UIScrollViewDelegate
+extension DetailViewController: UIScrollViewDelegate {
+    
+    // Stops the parent paging UIScrollView from paging up when tapping on the child UICollectionView
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollView.isPagingEnabled = scrollView.contentOffset.y < (scrollView.contentSize.height - scrollView.frame.size.height)
+    }
+    
+}
+
+// MARK: UICollectionView
 extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return selectedCollection?.movies?.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let item = selectedCollection?.movies?[indexPath.row] {
+            push(item: item)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -110,4 +127,28 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
         return CGSize(width: ((collectionView.bounds.size.height / 3 ) * 2) , height: collectionView.bounds.size.height)
     }
     
+}
+
+// MARK: Navigation
+extension DetailViewController {
+    
+    /// Navigating to a movie detail: if there is already a detail showing that item pop back to it, else push a new controller on.
+    func push(item: Movie) {
+        if let existingController = navigationController?.viewControllers.filter({ (controller) -> Bool in
+            if let detailView = controller as? DetailViewController {
+                return detailView.selectedItem?.id == item.id
+            } else {
+                return false
+            }
+        }).first as? DetailViewController {
+            navigationController?.popToViewController(existingController, animated: true)
+        } else {
+            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+            if let controller = storyBoard.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController {
+                controller.apiClient = apiClient
+                controller.selectedItem = item
+                navigationController?.pushViewController(controller, animated: true)
+            }
+        }
+    }
 }

@@ -32,9 +32,9 @@ final class NowPlaying {
 
 extension NowPlaying: APIAccessible {
 
-    static func get(id: Int?, api: APIClient, completion: @escaping (NowPlaying?, APIError?) -> Void) {
-        var urlString = "movie/now_playing"
-        if let id = id {urlString.append("?page=\(id)")}
+    // "Overriding" the protocol extension because of the extra URL query needed in this call.
+    static func get(id: Int, api: APIClient, completion: @escaping (NowPlaying?, APIError?) -> Void) {
+        let urlString = "movie/now_playing?page=\(id)"
         api.get(urlString: urlString, completion: completion)
     }
     

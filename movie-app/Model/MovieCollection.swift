@@ -30,20 +30,16 @@ final class MovieCollection {
         if let moviesArray = dict["parts"] as? [[String: Any]] {
             movies = Movie.from(array:moviesArray)
         }
-        
     }
-    
+
 }
+
 
 extension MovieCollection: APIAccessible {
     
-    static func get(id: Int?, api: APIClient, completion: @escaping (MovieCollection?, APIError?) -> Void) {
-        guard let id = id else {
-            assertionFailure()
-            return
-        }
+    // "Overriding" the protocol extension because of the class name (conflict - Collection is taken)
+    static func get(id: Int, api: APIClient, completion: @escaping (MovieCollection?, APIError?) -> Void) {
         api.get(urlString: "collection/\(id)", completion: completion)
     }
     
 }
-

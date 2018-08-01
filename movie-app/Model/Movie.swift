@@ -8,7 +8,7 @@
 
 import Foundation
 
-final class Movie {
+final class Movie: APIAccessible {
         
     var id: Int
     var title: String
@@ -44,16 +44,3 @@ final class Movie {
     }
     
 }
-
-extension Movie: APIAccessible {
-    
-    static func get(id: Int?, api: APIClient, completion: @escaping (Movie?, APIError?) -> Void) {
-        guard let id = id else {
-            assertionFailure()
-            return
-        }
-        api.get(urlString: "movie/\(id)", completion: completion)
-    }
-    
-}
-

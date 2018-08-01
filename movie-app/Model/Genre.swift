@@ -8,7 +8,7 @@
 
 import Foundation
 
-final class Genre {
+final class Genre: APIAccessible {
         
     var id: Int
     var name: String
@@ -24,17 +24,4 @@ final class Genre {
         name = dict["name"] as! String
     }
 
-}
-
-extension Genre: APIAccessible {
-    
-    static func get(id: Int?, api: APIClient, completion: @escaping (Genre?, APIError?) -> Void) {
-        guard let id = id else {
-            assertionFailure()
-            return
-        }
-        api.get(urlString: "genre/\(id)", completion: completion)
-
-    }
-    
 }

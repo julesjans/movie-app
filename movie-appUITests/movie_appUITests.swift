@@ -32,8 +32,8 @@ extension UITests {
     func givenAppOpens() {
         continueAfterFailure = false
         let app = XCUIApplication()
-        // Uncomment this to test the mock API
-        // app.launchArguments.append("APIClientMock")
+        // Comment this to test the live API
+        app.launchArguments.append("APIClientMock")
         app.launch()
         XCUIDevice.shared.orientation = .portrait
     }
