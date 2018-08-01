@@ -8,7 +8,6 @@
 
 import XCTest
 
-        
 class UITests: XCTestCase {
     
     func testUserFlow() {

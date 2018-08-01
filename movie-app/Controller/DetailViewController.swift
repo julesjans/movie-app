@@ -81,7 +81,7 @@ extension DetailViewController {
             NSLayoutConstraint.deactivate(collectionViewContraints)
         }
         if let posterPath = selectedItem?.posterPath {
-            apiClient?.image(for: posterPath) { (url, image, error) in
+            apiClient?.image(for: posterPath) { (_, image, error) in
                 DispatchQueue.main.async {
                     self.imageView?.image = image
                     UIView.animate(withDuration: 0.2, animations: {
@@ -122,8 +122,8 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
             cell.ratingView?.value = CGFloat(rating)
         }
         if let posterPath = item?.posterPath {
-            apiClient!.image(for: posterPath) { (url, image, error) in
-                if posterPath == url {
+            apiClient!.image(for: posterPath) { (pathString, image, error) in
+                if posterPath == pathString {
                     DispatchQueue.main.async {
                         cell.imageView?.image = image
                     }

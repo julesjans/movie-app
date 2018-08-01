@@ -34,7 +34,6 @@ final class MovieCollection {
 
 }
 
-
 extension MovieCollection: APIAccessible {
     
     // "Overriding" the protocol extension because of the class name (conflict - Collection is taken)

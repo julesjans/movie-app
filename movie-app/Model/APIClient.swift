@@ -58,7 +58,7 @@ protocol APIClient {
      - parameter for: Specific url for resource.
      - parameter completion: Completion block with original url string, UIImage, or APIError
      */
-    func image(for url: String, completion: @escaping (String, UIImage?, APIError?) -> Void)
+    func image(for pathString: String, completion: @escaping (String, UIImage?, APIError?) -> Void)
 }
 
 struct APIError: Error {
@@ -119,9 +119,14 @@ final class APIClientLive: APIClient {
         task.resume()
     }
     
-    // TODO: Add a better caching mechanism for the image
-    func image(for url: String, completion: @escaping (String, UIImage?, APIError?) -> Void) {
-        let query = URLComponents(string: "https://image.tmdb.org/t/p/w500\(url)")
+    func image(for pathString: String, completion: @escaping (String, UIImage?, APIError?) -> Void) {
+        
+        if let data = try? AssetCache.read(name: pathString) {
+            completion(pathString, UIImage(data: data), nil)
+            return
+        }
+        
+        let query = URLComponents(string: "https://image.tmdb.org/t/p/w500\(pathString)")
         guard let requestUrl = query?.url else {
             assertionFailure("Invalid URL")
             return
@@ -129,12 +134,13 @@ final class APIClientLive: APIClient {
         let task = URLSession.shared.downloadTask(with: URLRequest(url: requestUrl)) { (fileUrl, response, error) in
             guard error == nil, let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
                 let statusCode = (response as? HTTPURLResponse)?.statusCode
-                completion(url, nil, APIError(statusCode: statusCode, statusMessage: error?.localizedDescription ?? "Response error"))
+                completion(pathString, nil, APIError(statusCode: statusCode, statusMessage: error?.localizedDescription ?? "Response error"))
                 return
             }
             if let download = fileUrl {
                 if let data = try? Data(contentsOf: download) {
-                    completion(url, UIImage(data: data), nil)
+                    completion(pathString, UIImage(data: data), nil)
+                    try? AssetCache.write(data: data, name: pathString)
                     return
                 }
             }
@@ -171,8 +177,8 @@ final class APIClientMock: APIClient {
         completion(T(dict: rawSuccessData), nil)
     }
     
-    func image(for url: String, completion: @escaping (String, UIImage?, APIError?) -> Void) {
-        completion(url, UIImage(named: "image.jpg"), nil)
+    func image(for pathString: String, completion: @escaping (String, UIImage?, APIError?) -> Void) {
+        completion(pathString, UIImage(named: "image.jpg"), nil)
     }
     
 }

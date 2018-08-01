@@ -14,7 +14,7 @@ Due to time constraints there are some issues, for example:
 
 * There are very few data fields presented, only title, description, poster image and collections.
 
-* The only caching on the poster images (which have also not been optimised for size) is handled by the URLSession download task. 
+* Image fetching is not optimised. There is a basic cache (cleared on app termination), but this needs improving.
 
 * Tests are limited, but demonstate dependency injection with the API client. 
 

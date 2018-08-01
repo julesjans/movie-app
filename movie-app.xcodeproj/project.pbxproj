@@ -24,6 +24,7 @@
 		84910172210FA0BC006B54C8 /* genre.json in Resources */ = {isa = PBXBuildFile; fileRef = 8491016D210FA0BC006B54C8 /* genre.json */; };
 		8491017A210FD73C006B54C8 /* CollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84910179210FD73C006B54C8 /* CollectionCell.swift */; };
 		8491017E21100E27006B54C8 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491017D21100E27006B54C8 /* DetailViewController.swift */; };
+		84B3B338211226ED000FC7C5 /* AssetCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B3B337211226ED000FC7C5 /* AssetCache.swift */; };
 		84FBF31B21115DE50066D38E /* movie353081.json in Resources */ = {isa = PBXBuildFile; fileRef = 84FBF31A21115DE50066D38E /* movie353081.json */; };
 		84FBF31D21115FA10066D38E /* collection.json in Resources */ = {isa = PBXBuildFile; fileRef = 84FBF31C21115FA10066D38E /* collection.json */; };
 		84FBF31F2111611B0066D38E /* now_playing.json in Resources */ = {isa = PBXBuildFile; fileRef = 84FBF31E2111611B0066D38E /* now_playing.json */; };
@@ -75,6 +76,7 @@
 		8491016D210FA0BC006B54C8 /* genre.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = genre.json; sourceTree = "<group>"; };
 		84910179210FD73C006B54C8 /* CollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionCell.swift; sourceTree = "<group>"; };
 		8491017D21100E27006B54C8 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		84B3B337211226ED000FC7C5 /* AssetCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetCache.swift; sourceTree = "<group>"; };
 		84FBF31A21115DE50066D38E /* movie353081.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = movie353081.json; sourceTree = "<group>"; };
 		84FBF31C21115FA10066D38E /* collection.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = collection.json; sourceTree = "<group>"; };
 		84FBF31E2111611B0066D38E /* now_playing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = now_playing.json; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				84253CCE210F7DDD0083BBC6 /* Assets.xcassets */,
 				8491016A210F9FFF006B54C8 /* Seed Data */,
 				84253CC7210F7DDC0083BBC6 /* AppDelegate.swift */,
+				84B3B337211226ED000FC7C5 /* AssetCache.swift */,
 				84253CD3210F7DDD0083BBC6 /* Info.plist */,
 			);
 			path = "Supporting Files";
@@ -359,6 +362,7 @@
 			files = (
 				84910163210F7F57006B54C8 /* Movie.swift in Sources */,
 				84253CCA210F7DDC0083BBC6 /* ViewController.swift in Sources */,
+				84B3B338211226ED000FC7C5 /* AssetCache.swift in Sources */,
 				8491017A210FD73C006B54C8 /* CollectionCell.swift in Sources */,
 				84910167210F8302006B54C8 /* NowPlaying.swift in Sources */,
 				84253CF7210F7E560083BBC6 /* Secret.swift in Sources */,

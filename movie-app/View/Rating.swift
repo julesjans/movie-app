@@ -62,8 +62,7 @@ class Rating: UIView {
     
 }
 
-
-class StarView: UIView {
+fileprivate class StarView: UIView {
     
     class Star : UIView {
         
@@ -81,7 +80,7 @@ class StarView: UIView {
             
             UIColor.black.setFill()
             
-            // Star path code: https://stackoverflow.com/questions/18268079/drawrect-draw-star
+            // Star path code from Stack Overflow: https://stackoverflow.com/questions/18268079/drawrect-draw-star
             let polygonPath = UIBezierPath()
             
             let xCenter: CGFloat = bounds.width / 2

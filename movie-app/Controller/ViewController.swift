@@ -114,9 +114,9 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
         }
         
         if let posterPath = item.posterPath {
-            apiClient.image(for: posterPath) { (url, image, error) in
+            apiClient.image(for: posterPath) { (pathString, image, error) in
                 DispatchQueue.main.async {
-                    if posterPath == url {
+                    if posterPath == pathString {
                         cell.imageView?.image = image
                     }
                 }
@@ -132,9 +132,7 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
         // Helper method for calculating a CGSize from a given grid.
         func sizeForGrid(_ horizontal: CGFloat, _ vertical: CGFloat) -> CGSize {
             let width = (collectionView.bounds.size.width / horizontal)
-            //let height = (collectionView.bounds.size.height / vertical) - (navigationController?.navigationBar.frame.height ?? 0)
             let height = (collectionView.bounds.size.height - view.safeAreaInsets.top) / vertical
-
             return CGSize(width: width, height: height)
         }
         
@@ -152,7 +150,6 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
         // iPhone Landscape
         case (.compact, .compact):
             return sizeForGrid(3.0, 2.0)
-        // This should not be necessary
         default:
             return sizeForGrid(2.0, 2.0)
         }
