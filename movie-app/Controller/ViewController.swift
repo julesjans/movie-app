@@ -24,7 +24,8 @@ class ViewController: UIViewController {
     var isLoading = false
     var lastFetchedPage = 0
     
-    @IBOutlet weak var collectionView : UICollectionView!
+    @IBOutlet var collectionView : UICollectionView!
+    @IBOutlet var activityIndicator : UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +34,7 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        activityIndicator.startAnimating()
         getData()
     }
     
@@ -62,10 +64,11 @@ extension ViewController {
         
         isLoading = true
         lastFetchedPage += 1
-        
+
         NowPlaying.get(id: lastFetchedPage, api: apiClient) { (nowPlaying, error) in
             if let movies = nowPlaying?.movies {
                 DispatchQueue.main.async {
+                    self.activityIndicator.stopAnimating()
                     let startIndex = self.items.count
                     self.items.append(contentsOf: movies)
                     let indexes = (startIndex..<self.items.count).map { IndexPath(row: $0, section: 0)}
@@ -105,6 +108,11 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! CollectionCell
         let item = items[indexPath.row]
         cell.title.text = item.title
+        
+        if let rating = item.voteAverage {
+            cell.ratingView?.value = CGFloat(rating)
+        }
+        
         if let posterPath = item.posterPath {
             apiClient.image(for: posterPath) { (url, image, error) in
                 DispatchQueue.main.async {
@@ -113,6 +121,8 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
                     }
                 }
             }
+        } else {
+            cell.imageView?.image = UIImage(named: "image.jpg")
         }
         return cell
     }
@@ -122,7 +132,9 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
         // Helper method for calculating a CGSize from a given grid.
         func sizeForGrid(_ horizontal: CGFloat, _ vertical: CGFloat) -> CGSize {
             let width = (collectionView.bounds.size.width / horizontal)
-            let height = (collectionView.bounds.size.height / vertical)
+            //let height = (collectionView.bounds.size.height / vertical) - (navigationController?.navigationBar.frame.height ?? 0)
+            let height = (collectionView.bounds.size.height - view.safeAreaInsets.top) / vertical
+
             return CGSize(width: width, height: height)
         }
         
@@ -130,13 +142,7 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
         switch (traitCollection.horizontalSizeClass, traitCollection.verticalSizeClass) {
         // iPad
         case (.regular, .regular):
-            if collectionView.bounds.size.width > collectionView.bounds.size.height {
-                // iPad Landscape
-                return sizeForGrid(4.0, 3.0)
-            } else {
-                // iPad Portrait
-                return sizeForGrid(4.0, 4.0)
-            }
+            return sizeForGrid(4.0, 3.0)
         // iPhone Portrait
         case (.compact, .regular):
             return sizeForGrid(2.0, 3.0)

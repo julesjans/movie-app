@@ -14,7 +14,10 @@ class DetailViewController: UIViewController {
     var selectedItem: Movie?
     var selectedCollection: MovieCollection?
     
+    @IBOutlet var activityIndicator : UIActivityIndicatorView!
+    @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var imageView: UIImageView!
+    @IBOutlet var ratingView: Rating!
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var overviewLabel: UILabel!
     @IBOutlet var collectionView: UICollectionView!
@@ -30,6 +33,8 @@ class DetailViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        scrollView.alpha = 0.0
+        activityIndicator.startAnimating()
         getData()
     }
     
@@ -43,6 +48,7 @@ extension DetailViewController {
             assertionFailure()
             return
         }
+        
         Movie.get(id: id, api: apiClient) { (movie, error) in
             assert(movie != nil)
             DispatchQueue.main.async {
@@ -64,7 +70,9 @@ extension DetailViewController {
     func configureView() {
         titleLabel.text = selectedItem?.title
         overviewLabel.text = selectedItem?.overview
-        
+        if let rating = selectedItem?.voteAverage {
+            ratingView.value = CGFloat(rating)
+        }
         if let collectionName = selectedItem?.collection?.name {
             collectionLabel.text = collectionName
             NSLayoutConstraint.activate(collectionViewContraints)
@@ -72,24 +80,23 @@ extension DetailViewController {
             collectionLabel.text = nil
             NSLayoutConstraint.deactivate(collectionViewContraints)
         }
-        
         if let posterPath = selectedItem?.posterPath {
             apiClient?.image(for: posterPath) { (url, image, error) in
                 DispatchQueue.main.async {
                     self.imageView?.image = image
+                    UIView.animate(withDuration: 0.2, animations: {
+                        self.activityIndicator.stopAnimating()
+                        self.scrollView.alpha = 1.0
+                    })
                 }
             }
+        } else {
+            imageView?.image = UIImage(named: "image.jpg")
+            UIView.animate(withDuration: 0.2, animations: {
+                self.activityIndicator.stopAnimating()
+                self.scrollView.alpha = 1.0
+            })
         }
-    }
-    
-}
-
-// MARK: UIScrollViewDelegate
-extension DetailViewController: UIScrollViewDelegate {
-    
-    // Stops the parent paging UIScrollView from paging up when tapping on the child UICollectionView
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        scrollView.isPagingEnabled = scrollView.contentOffset.y < (scrollView.contentSize.height - scrollView.frame.size.height)
     }
     
 }
@@ -111,6 +118,9 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! CollectionCell
         let item = selectedCollection?.movies?[indexPath.row]
         cell.title.text = item?.title
+        if let rating = item?.voteAverage {
+            cell.ratingView?.value = CGFloat(rating)
+        }
         if let posterPath = item?.posterPath {
             apiClient!.image(for: posterPath) { (url, image, error) in
                 if posterPath == url {
@@ -119,6 +129,8 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
                     }
                 }
             }
+        } else {
+            cell.imageView?.image = UIImage(named: "image.jpg")
         }
         return cell
     }

@@ -30,6 +30,7 @@
 		84FBF322211162620066D38E /* movie954.json in Resources */ = {isa = PBXBuildFile; fileRef = 84FBF320211162620066D38E /* movie954.json */; };
 		84FBF323211162620066D38E /* movie351286.json in Resources */ = {isa = PBXBuildFile; fileRef = 84FBF321211162620066D38E /* movie351286.json */; };
 		84FBF325211165500066D38E /* image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84FBF324211165500066D38E /* image.jpg */; };
+		84FFBBF92111950700DD7723 /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FFBBF82111950700DD7723 /* Rating.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +81,7 @@
 		84FBF320211162620066D38E /* movie954.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = movie954.json; sourceTree = "<group>"; };
 		84FBF321211162620066D38E /* movie351286.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = movie351286.json; sourceTree = "<group>"; };
 		84FBF324211165500066D38E /* image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image.jpg; sourceTree = "<group>"; };
+		84FFBBF82111950700DD7723 /* Rating.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,9 +178,9 @@
 		84910175210FA3A2006B54C8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				84253CCE210F7DDD0083BBC6 /* Assets.xcassets */,
 				8491016A210F9FFF006B54C8 /* Seed Data */,
 				84253CC7210F7DDC0083BBC6 /* AppDelegate.swift */,
-				84253CCE210F7DDD0083BBC6 /* Assets.xcassets */,
 				84253CD3210F7DDD0083BBC6 /* Info.plist */,
 			);
 			path = "Supporting Files";
@@ -202,6 +204,7 @@
 				84253CD0210F7DDD0083BBC6 /* LaunchScreen.storyboard */,
 				84253CCB210F7DDC0083BBC6 /* Main.storyboard */,
 				84910179210FD73C006B54C8 /* CollectionCell.swift */,
+				84FFBBF82111950700DD7723 /* Rating.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -359,6 +362,7 @@
 				8491017A210FD73C006B54C8 /* CollectionCell.swift in Sources */,
 				84910167210F8302006B54C8 /* NowPlaying.swift in Sources */,
 				84253CF7210F7E560083BBC6 /* Secret.swift in Sources */,
+				84FFBBF92111950700DD7723 /* Rating.swift in Sources */,
 				84910165210F8213006B54C8 /* Genre.swift in Sources */,
 				84253CC8210F7DDC0083BBC6 /* AppDelegate.swift in Sources */,
 				8491017E21100E27006B54C8 /* DetailViewController.swift in Sources */,

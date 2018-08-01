@@ -17,12 +17,48 @@ class UITests: XCTestCase {
         shouldDisplay(value: "Jurassic World: Fallen Kingdom")
         select("Mission: Impossible - Fallout")
         shouldDisplay(value: "Mission: Impossible - Fallout")
+        swipeUp()
         shouldDisplay(value: "Mission: Impossible Collection")
+        select("Mission: Impossible")
+        go("Back")
         go("Back")
         shouldDisplay(value: "Jurassic World: Fallen Kingdom")
         select("Jurassic World: Fallen Kingdom")
+        swipeUp()
         shouldDisplay(value: "Jurassic Park Collection")
         go("Back")
+    }
+    
+    func testUserFlowMultipleOrientations() {
+        givenAppOpens()
+        rotate()
+        shouldDisplay(value: "Mission: Impossible - Fallout")
+        rotate()
+        shouldDisplay(value: "Jurassic World: Fallen Kingdom")
+        rotate()
+        select("Mission: Impossible - Fallout")
+        rotate()
+        shouldDisplay(value: "Mission: Impossible - Fallout")
+        rotate()
+        swipeUp()
+        rotate()
+        shouldDisplay(value: "Mission: Impossible Collection")
+        select("Mission: Impossible")
+        rotate()
+        go("Back")
+        rotate()
+        go("Back")
+        rotate()
+        shouldDisplay(value: "Jurassic World: Fallen Kingdom")
+        rotate()
+        select("Jurassic World: Fallen Kingdom")
+        rotate()
+        swipeUp()
+        rotate()
+        shouldDisplay(value: "Jurassic Park Collection")
+        rotate()
+        go("Back")
+        XCUIDevice.shared.orientation = .portrait
     }
     
 }
@@ -40,7 +76,7 @@ extension UITests {
     
     func select(_ input: String) {
         let app = XCUIApplication()
-        app.staticTexts[input].tap()
+        app.staticTexts[input].firstMatch.tap()
     }
     
     func go(_ input: String) {
@@ -48,9 +84,18 @@ extension UITests {
         app.navigationBars["Movie"].buttons[input].tap()
     }
     
+    func swipeUp() {
+        let app = XCUIApplication()
+        app.windows.element.firstMatch.swipeUp()
+    }
+    
     func shouldDisplay(value: String) {
         let app = XCUIApplication()
-        XCTAssertTrue(app.staticTexts[value].isHittable)
+        XCTAssertTrue(app.staticTexts[value].firstMatch.isHittable)
+    }
+    
+    func rotate() {
+        XCUIDevice.shared.orientation = XCUIDevice.shared.orientation.isPortrait ? .landscapeLeft : .portrait
     }
     
 }
