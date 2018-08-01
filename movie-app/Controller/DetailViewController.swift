@@ -38,6 +38,11 @@ class DetailViewController: UIViewController {
         getData()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        scrollView.setContentOffset(CGPoint(x: 0, y: -view.safeAreaInsets.top), animated: false)
+    }
+    
 }
 
 // MARK: Fetching data and configuring the view
