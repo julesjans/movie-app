@@ -31,6 +31,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         self.navigationItem.title = NSLocalizedString("Now Playing", comment: "Now playing header")
         NotificationCenter.default.addObserver(self, selector: #selector(self.resetData), name: .UIApplicationWillEnterForeground, object: nil)
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action:  #selector(refreshData), for: UIControlEvents.valueChanged)
+        collectionView.refreshControl = refreshControl
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -92,7 +95,20 @@ extension ViewController {
         items = [Movie]()
         collectionView.setContentOffset(CGPoint.zero, animated: false)
         collectionView.reloadData()
-        navigationController?.popToViewController(self, animated: false)
+        if navigationController?.topViewController != self {
+            navigationController?.popToViewController(self, animated: false)
+        }
+    }
+    
+    @objc func refreshData() {
+        self.lastFetchedPage = 0
+        self.items = [Movie]()
+        self.collectionView.performBatchUpdates({
+            self.collectionView.reloadSections(IndexSet(integersIn: 0...0))
+        }, completion: { (_) in
+            self.collectionView.refreshControl?.endRefreshing()
+            self.getData()
+        })
     }
     
 }
@@ -104,7 +120,7 @@ extension ViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let contentOffset = scrollView.contentOffset.y
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height;
-        if !isLoading && (maximumOffset - contentOffset <= 100) {
+        if !isLoading && (maximumOffset - contentOffset <= (view.bounds.size.height / 2)) {
             getData()
         }
     }
