@@ -72,7 +72,9 @@ Tests can be run through the standard test functions in Xcode.
 
 * Image fetching is not optimised. There is a cache (cleared on app termination).
 
-* Tests are limited, but demonstrate dependency injection with the API client. 
+* Tests are limited, but demonstrate dependency injection with the API client.
+
+* Currently the "Now Playing" controller only resets it's data when the app resumes. 
 
 ##  iPad Layout ##
 

@@ -30,6 +30,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = NSLocalizedString("Now Playing", comment: "Now playing header")
+        NotificationCenter.default.addObserver(self, selector: #selector(self.resetData), name: .UIApplicationWillEnterForeground, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -84,6 +85,14 @@ extension ViewController {
             }
             
         }
+    }
+    
+    @objc func resetData() {
+        lastFetchedPage = 0
+        items = [Movie]()
+        collectionView.setContentOffset(CGPoint.zero, animated: false)
+        collectionView.reloadData()
+        navigationController?.popToViewController(self, animated: false)
     }
     
 }
