@@ -74,7 +74,7 @@ Tests can be run through the standard test functions in Xcode.
 
 * Tests are limited, but demonstrate dependency injection with the API client.
 
-* Currently the "Now Playing" controller only resets it's data when the app resumes. 
+* Currently the "Now Playing" controller only resets data when the app resumes. 
 
 ##  iPad Layout ##
 
