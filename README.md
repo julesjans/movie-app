@@ -8,14 +8,6 @@ If the movie is part of a collection the associated movies are also loaded, and 
 
 ![movie-app](http://bucket-uk.julesjans.com.s3.amazonaws.com/Misc/Images/movie-app-2.gif)
 
-##  Notes ##
-
-* Network connectivity is assumed, there is no handling of offline states, error messages etc.
-
-* Image fetching is not optimised. There is a cache (cleared on app termination).
-
-* Tests are limited, but demonstrate dependency injection with the API client. 
-
 ##  Configuration & build ##
 
 The app has been built in Xcode 9.4.1 & Swift 4.1.
@@ -68,11 +60,19 @@ Necessary files, configuration, assets and seed data for tests.
 
 ##  Testing ##
 
-Tests can be run through the standard test menu functions in Xcode.
+Tests can be run through the standard test functions in Xcode.
 
 1. *movie-appTests/* - Unit tests for the model and the API, uses a mock API that can be switched to test the live API.
 
 2. *movie-appUITests/* - BDD UI tests for the view, uses a mock API and can also be switched to test the live API.
+
+##  Notes ##
+
+* Network connectivity is assumed, there is no handling of offline states, error messages etc.
+
+* Image fetching is not optimised. There is a cache (cleared on app termination).
+
+* Tests are limited, but demonstrate dependency injection with the API client. 
 
 ##  iPad Layout ##
 
