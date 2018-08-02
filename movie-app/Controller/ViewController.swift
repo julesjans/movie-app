@@ -66,6 +66,11 @@ extension ViewController {
         lastFetchedPage += 1
 
         NowPlaying.get(id: lastFetchedPage, api: apiClient) { (nowPlaying, error) in
+            self.isLoading = false
+            guard error == nil, nowPlaying != nil else {
+                assertionFailure()
+                return
+            }
             if let movies = nowPlaying?.movies {
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
@@ -77,7 +82,7 @@ extension ViewController {
                     })
                 }
             }
-            self.isLoading = false
+            
         }
     }
     
@@ -115,6 +120,10 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
         
         if let posterPath = item.posterPath {
             apiClient.image(for: posterPath) { (pathString, image, error) in
+                guard error == nil, image != nil else {
+                    assertionFailure()
+                    return
+                }
                 DispatchQueue.main.async {
                     if posterPath == pathString {
                         cell.imageView?.image = image

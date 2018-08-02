@@ -55,12 +55,19 @@ extension DetailViewController {
         }
         
         Movie.get(id: id, api: apiClient) { (movie, error) in
-            assert(movie != nil)
+            guard error == nil, movie != nil else {
+                assertionFailure()
+                return
+            }
             DispatchQueue.main.async {
                 self.selectedItem = movie
                 self.configureView()
                 if let collection = self.selectedItem?.collection {
                     MovieCollection.get(id: collection.id, api: apiClient, completion: { (collection, error) in
+                        guard error == nil, collection != nil else {
+                            assertionFailure()
+                            return
+                        }
                         assert(collection != nil)
                         DispatchQueue.main.async {
                             self.selectedCollection = collection
@@ -87,6 +94,10 @@ extension DetailViewController {
         }
         if let posterPath = selectedItem?.posterPath {
             apiClient?.image(for: posterPath) { (_, image, error) in
+                guard error == nil else {
+                    assertionFailure()
+                    return
+                }
                 DispatchQueue.main.async {
                     self.imageView?.image = image
                     UIView.animate(withDuration: 0.2, animations: {
@@ -128,6 +139,10 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
         }
         if let posterPath = item?.posterPath {
             apiClient!.image(for: posterPath) { (pathString, image, error) in
+                guard error == nil, image != nil else {
+                    assertionFailure()
+                    return
+                }
                 if posterPath == pathString {
                     DispatchQueue.main.async {
                         cell.imageView?.image = image
