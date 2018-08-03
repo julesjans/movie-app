@@ -22,7 +22,8 @@ class ViewController: UIViewController {
     
     var items = [Movie]()
     var isLoading = false
-    var lastFetchedPage = 0
+    var fetchPage = 1
+    var totalPages = 1
     
     @IBOutlet var collectionView : UICollectionView!
     @IBOutlet var activityIndicator : UIActivityIndicatorView!
@@ -38,7 +39,9 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        activityIndicator.startAnimating()
+        if items.count == 0 {
+            activityIndicator.startAnimating()
+        }
         getData()
     }
     
@@ -65,15 +68,18 @@ class ViewController: UIViewController {
 extension ViewController {
     
     func getData() {
+        guard fetchPage <= totalPages else { return }
         
         isLoading = true
-        lastFetchedPage += 1
-
-        NowPlaying.get(id: lastFetchedPage, api: apiClient) { (nowPlaying, error) in
+        NowPlaying.get(id: fetchPage, api: apiClient) { (nowPlaying, error) in
             self.isLoading = false
+            self.fetchPage += 1
             guard error == nil, nowPlaying != nil else {
                 assertionFailure()
                 return
+            }
+            if let totalPages = nowPlaying?.totalPages {
+                self.totalPages = totalPages
             }
             if let movies = nowPlaying?.movies {
                 DispatchQueue.main.async {
@@ -86,12 +92,11 @@ extension ViewController {
                     })
                 }
             }
-            
         }
     }
     
     @objc func resetData() {
-        lastFetchedPage = 0
+        fetchPage = 1
         items = [Movie]()
         collectionView.setContentOffset(CGPoint.zero, animated: false)
         collectionView.reloadData()
@@ -101,7 +106,7 @@ extension ViewController {
     }
     
     @objc func refreshData() {
-        self.lastFetchedPage = 0
+        self.fetchPage = 1
         self.items = [Movie]()
         self.collectionView.performBatchUpdates({
             self.collectionView.reloadSections(IndexSet(integersIn: 0...0))
