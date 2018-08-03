@@ -106,9 +106,9 @@ extension ViewController {
     }
     
     @objc func refreshData() {
-        self.fetchPage = 1
-        self.items = [Movie]()
-        self.collectionView.performBatchUpdates({
+        fetchPage = 1
+        items = [Movie]()
+        collectionView.performBatchUpdates({
             self.collectionView.reloadSections(IndexSet(integersIn: 0...0))
         }, completion: { (_) in
             self.collectionView.refreshControl?.endRefreshing()
