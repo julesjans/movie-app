@@ -47,7 +47,19 @@ class ViewController: UIViewController {
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+    
+        let point = CGPoint(x: 0, y: collectionView.contentOffset.y + view.safeAreaInsets.top)
+        // When scrolling to a cell on rotate: use the cell at the top left or use the cell in the center?
+        // let point = view.convert(collectionView.center, to: collectionView)
+        let indexPath = collectionView.indexPathForItem(at: point)
+        
         collectionView.collectionViewLayout.invalidateLayout()
+        
+        if let indexPath = indexPath {
+            coordinator.animate(alongsideTransition: { (_) in
+                self.collectionView.scrollToItem(at: indexPath, at: .top, animated: false)
+            })
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
