@@ -153,13 +153,6 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! CollectionCell
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-    
-        guard let cell = cell as? CollectionCell else { return }
-        
         let item = items[indexPath.row]
         cell.title.text = item.title
         
@@ -174,7 +167,7 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
                     return
                 }
                 DispatchQueue.main.async {
-                    if let cell = collectionView.cellForItem(at: indexPath) as? CollectionCell {
+                    if posterPath == pathString {
                         cell.imageView?.image = image
                     }
                 }
@@ -182,6 +175,7 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
         } else {
             cell.imageView?.image = UIImage(named: "image.jpg")
         }
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
