@@ -14,9 +14,12 @@ class CollectionCell: UICollectionViewCell {
     @IBOutlet var title: UILabel!
     @IBOutlet var imageView: UIImageView?
     @IBOutlet var ratingView: Rating?
+    var posterPath: String?
 
     override func prepareForReuse() {
+        super.prepareForReuse()
         title.text = ""
+        posterPath = nil
         imageView?.image = nil
         ratingView?.value = 0.0
     }

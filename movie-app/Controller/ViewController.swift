@@ -155,6 +155,7 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! CollectionCell
         let item = items[indexPath.row]
         cell.title.text = item.title
+        cell.posterPath = item.posterPath
         
         if let rating = item.voteAverage {
             cell.ratingView?.value = CGFloat(rating)
@@ -167,7 +168,7 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
                     return
                 }
                 DispatchQueue.main.async {
-                    if posterPath == pathString {
+                    if cell.posterPath == pathString {
                         cell.imageView?.image = image
                     }
                 }
