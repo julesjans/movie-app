@@ -132,19 +132,28 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! CollectionCell
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        guard let cell = cell as? CollectionCell else { return }
+        
         let item = selectedCollection?.movies?[indexPath.row]
         cell.title.text = item?.title
+        
         if let rating = item?.voteAverage {
             cell.ratingView?.value = CGFloat(rating)
         }
+        
         if let posterPath = item?.posterPath {
-            apiClient!.image(for: posterPath) { (pathString, image, error) in
+            apiClient?.image(for: posterPath) { (pathString, image, error) in
                 guard error == nil, image != nil else {
                     assertionFailure()
                     return
                 }
-                if posterPath == pathString {
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    if let cell = collectionView.cellForItem(at: indexPath) as? CollectionCell {
                         cell.imageView?.image = image
                     }
                 }
@@ -152,7 +161,6 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
         } else {
             cell.imageView?.image = UIImage(named: "image.jpg")
         }
-        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
