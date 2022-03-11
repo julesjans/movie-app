@@ -6,7 +6,7 @@ A sample app that accesses: https://api.themoviedb.org, and displays movie infor
 The "Now Playing" view fetches new content when scrolling down. Selecting a movie presents a movie page with description. 
 If the movie is part of a collection the associated movies are also loaded, and selectable.
 
-![movie-app](http://bucket-uk.julesjans.com.s3.amazonaws.com/Misc/Images/movie-app-2.gif)
+![movie-app](https://user-images.githubusercontent.com/57953/157980363-ab0cd67c-385d-4397-ac93-cccd2acb506e.gif)
 
 ##  Configuration & build ##
 
@@ -78,5 +78,4 @@ Tests can be run through the standard test functions in Xcode.
 
 ##  iPad Layout ##
 
-![movie-app-ipad](http://bucket-uk.julesjans.com.s3.amazonaws.com/Misc/Images/movie-app-ipad-small.jpg)
-
+![movie-app-ipad-small](https://user-images.githubusercontent.com/57953/157980478-37275c7e-7d4d-4c1c-92c2-51825f46e483.jpg)
